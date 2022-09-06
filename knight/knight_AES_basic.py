@@ -43,13 +43,13 @@ def promising(L, N, x, y):
 
 
 if __name__ == "__main__":
-    t0 = time()
     N = int(input())
     L = np.full((N, N), -1)
     x0, y0 = map(int, input("Coordonnées de départ au format x y: ").split())
     L[x0][y0] = 1
     next = 2
     backs = 0
+    t0 = time()
     if AES(L, N, x0, y0, next):
         print(L)
     else:
