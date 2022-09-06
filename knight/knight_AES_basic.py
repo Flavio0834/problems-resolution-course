@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 
 # Resolving knight problem on a NxN chessboard, N > 4
 # L : Array of chessboard
@@ -42,6 +43,7 @@ def promising(L, N, x, y):
 
 
 if __name__ == "__main__":
+    t0 = time()
     N = int(input())
     L = np.full((N, N), -1)
     x0, y0 = map(int, input("Coordonnées de départ au format x y: ").split())
@@ -53,3 +55,4 @@ if __name__ == "__main__":
     else:
         print("Echec (et pas mat)")
     print("Nombre de retours arrière : ", backs)
+    print("Temps d'exécution : ", time() - t0)
