@@ -44,7 +44,7 @@ if __name__ == "__main__":
     L = np.full((N + 4, N + 4), 0)
     L[2:-2, 2:-2] = -1
     x0, y0 = map(int, input("Coordonnées de départ au format x y: ").split())
-    L[x0 + 2][y0 + 2] = 1
+    L[x0 + 2, y0 + 2] = 1
     next = 2
     backs = 0
     t0 = time()
