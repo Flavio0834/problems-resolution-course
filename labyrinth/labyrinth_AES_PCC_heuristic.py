@@ -26,7 +26,7 @@ if __name__ == "__main__":
     deltas = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
     # Generating a labyrinth
-    N = 7
+    N = 12
     lab = Labyrinth(N)
     lab.remplir(N * N // 3)
     print(lab)
@@ -72,5 +72,10 @@ if __name__ == "__main__":
     # Solving the labyrinth
 
     print("\n***********\n")
-    print(AES(lab, nums, debut[0], debut[1]))
+    print(lab)
+    print("\n***********\n")
+    trajet = AES(lab, nums, debut[0], debut[1])
+    print(trajet)
+    for (x, y) in trajet:
+        lab.set_case(x, y, 4)
     print(lab)
