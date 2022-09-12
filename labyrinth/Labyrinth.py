@@ -121,7 +121,13 @@ class Labyrinth:
         self.__matrice[L][C] = val
 
     def is_free(self, L, C):
-        return self.__matrice[L][C] == 0
+        return (
+            L >= 0
+            and L < self.__taille
+            and C >= 0
+            and C < self.__taille
+            and self.__matrice[L][C] == 0
+        )
 
 
 if __name__ == "__main__":
