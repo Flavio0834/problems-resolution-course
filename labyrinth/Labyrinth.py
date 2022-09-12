@@ -102,6 +102,24 @@ class Labyrinth:
             col = case_mur % self.__taille
             self.__matrice[ligne][col] = 1
 
+    def get_debut(self):
+        return self.__debut
+
+    def get_fin(self):
+        return self.__fin
+
+    def get_matrice(self):
+        return self.__matrice
+
+    def get_taille(self):
+        return self.__taille
+
+    def get_case(self, L, C):
+        return self.__matrice[L][C]
+
+    def set_case(self, L, C, val):
+        self.__matrice[L][C] = val
+
 
 if __name__ == "__main__":
     taille = 12
