@@ -126,7 +126,7 @@ class Labyrinth:
             and L < self.__taille
             and C >= 0
             and C < self.__taille
-            and self.__matrice[L][C] == 0
+            and self.__matrice[L][C] != 1
         )
 
 
