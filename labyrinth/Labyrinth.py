@@ -120,6 +120,9 @@ class Labyrinth:
     def set_case(self, L, C, val):
         self.__matrice[L][C] = val
 
+    def is_free(self, L, C):
+        return self.__matrice[L][C] == 0
+
 
 if __name__ == "__main__":
     taille = 12
