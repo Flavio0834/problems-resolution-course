@@ -1,0 +1,1 @@
+Resolving simple 2D labyrinth problem using different methods, as a bonus from the knight tour course.
