@@ -39,11 +39,27 @@ def place_human(N, game, coord, color):
     print("\n")
     for k in game:
         print(k)
-    while not ((x, y) in coord[2]):
-        x, y = map(int, input("Coordonnées du coup au format x y : ").split())
+    if len(coord[color]) == N:
+        print("Il va falloir déplacer un pion.")
+        while not ((x, y) in coord[2]):
+            x, y = map(
+                int, input("Coordonnées du nouveau pion au format x y : ").split()
+            )
+    else:
+        while not ((x, y) in coord[2]):
+            x, y = map(int, input("Coordonnées du pion au format x y : ").split())
     game[x][y] = color
     coord[color].append((x, y))
     coord[2].remove((x, y))
+    if len(coord[color]) == N + 1:
+        x1, y1 = -1, -1
+        while not ((x1, y1) in coord[color]):
+            x1, y1 = map(
+                int, input("Coordonnées du pion à retirer au format x y : ").split()
+            )
+        game[x1][y1] = float("inf")
+        coord[color].remove((x1, y1))
+        coord[2].append((x1, y1))
 
 
 def win(N, game, color):
