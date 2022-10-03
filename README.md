@@ -1,1 +1,1 @@
-Repo de mes solutions de TD du cours d'approfondissement de 2ème année : "Stratégies de résolution de problèmes" à l'école Centrale de Lyon (2022-2023).
+Solutions of exercises from the course "Stratégies de résolution de problèmes" (problem solving strategies) at Ecole Centrale de Lyon (2022-2023, Semester 7).
