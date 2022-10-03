@@ -1,18 +1,21 @@
 import random
 
 
-def play(N, game, coord):
+def play(N, game, coord, human):
     color = False
     end = False
     while not end:
-        place(N, game, coord, color)
+        if color == human:
+            place_human(N, game, coord, color)
+        else:
+            place_random(N, game, coord, color)
         end = win(N, game, color)
         if not end:
             color = not color
     return color
 
 
-def place(N, game, coord, color):
+def place_random(N, game, coord, color):
     i, j = -1, -1
     if len(coord[color]) == N:
         rd = random.randint(0, N - 1)
@@ -29,6 +32,18 @@ def place(N, game, coord, color):
                 coord[2].append((i, j))
                 game[i][j] = float("inf")
             found = True
+
+
+def place_human(N, game, coord, color):
+    x, y = -1, -1
+    print("\n")
+    for k in game:
+        print(k)
+    while not ((x, y) in coord[2]):
+        x, y = map(int, input("Coordonnées du coup au format x y : ").split())
+    game[x][y] = color
+    coord[color].append((x, y))
+    coord[2].remove((x, y))
 
 
 def win(N, game, color):
@@ -54,7 +69,16 @@ def initialize(N):
     for i in range(N):
         for j in range(N):
             coord[2].append((i, j))
-    print("Noirs" if play(N, game, coord) else "Blancs")
+    human = -1
+    while not (human == 0 or human == 1):
+        human = int(input("\nBlancs (0) ou Noirs (1) ? "))
+    print(
+        "\nLes Noirs ont gagné !\n"
+        if play(N, game, coord, human)
+        else "\nLes Blancs ont gagné !\n"
+    )
+    for k in game:
+        print(k)
 
 
 if __name__ == "__main__":
