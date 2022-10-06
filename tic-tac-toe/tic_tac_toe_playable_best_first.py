@@ -17,7 +17,7 @@ def evaluation(N,game,coord,color,coordinates):
             NL1+=1
         if player[1]==coordinates[1]:
             NC1+=1
-    for opponent in coord[not color]:
+    for opponent in coord[ncolor]:
         if opponent[0]==coordinates[0]:
             NL2+=1
         if opponent[1]==coordinates[1]:
@@ -50,7 +50,7 @@ def evaluation(N,game,coord,color,coordinates):
         f3=-1
     if ND22>1:
         f4*=2
-    return (f1*(NL2-NL1)**2+f2*(NC2-NC1)**2+f3*(ND12-ND11)**2+f4*(ND22-ND21)**2)*f1*f2*max(abs(f3),abs(f4))
+    return (f1*(NL2-NL1)**2+f2*(NC2-NC1)**2+f3*(ND12-ND11)**2+f4*(ND22-ND21)**2)*abs(f1)*abs(f2)*max(abs(f3),abs(f4))
     
 def play(N, game, coord, human):
     color = False
