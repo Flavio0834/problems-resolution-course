@@ -87,7 +87,7 @@ class Interface(tk.Tk):
         # Sur quelle case a-t-on cliqué ?
         for case in self.liste_cases:
             if x > case[0] and x < case[2] and y > case[1] and y < case[3]:
-                self.morpion.dessiner_au_piff_c_est_un_test(
+                self.morpion.place_pawn(
                     self.liste_cases.index(case)
                 )
 
@@ -97,18 +97,18 @@ class Morpion:
         self.interface = interface
         self.N=self.interface.N
         self.matrice = [None for i in range(self.N**2)]
-        self.joueurs = ["rond", "croix"]
-        self.joueur_debut = random.randint(0, 1)
+        self.joueur = True
         self.nombre_tour = 0
         self.case_a_vider = -1
         self.vainqueur = None
         self.IA = None
 
-    def dessiner_au_piff_c_est_un_test(self, case):
+    def place_pawn(self, case):
         if self.matrice[case] == None:
-            self.matrice[case] = random.choice(["rond", "croix"])
+            self.matrice[case] = self.joueur
             self.repaint()
-        else:
+            self.joueur = not self.joueur
+        elif self.matrice[case] == self.joueur:
             print(f"La case {case} n'est pas vide !")
             self.case_a_vider = case
             self.matrice[self.case_a_vider] = None
@@ -117,10 +117,10 @@ class Morpion:
     def repaint(self):
         for i in range(self.N**2):
             self.interface.effacer(i)
-            if self.matrice[i] == "croix":
-                self.interface.tracer("croix", i)
-            elif self.matrice[i] == "rond":
-                self.interface.tracer("rond", i)
+            if self.matrice[i]==True :
+                self.interface.tracer(True, i)
+            elif self.matrice[i] == False:
+                self.interface.tracer(False, i)
 
 
 def printMatrice(M):
