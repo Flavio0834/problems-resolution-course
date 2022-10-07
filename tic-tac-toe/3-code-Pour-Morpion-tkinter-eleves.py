@@ -18,19 +18,20 @@ import copy
 
 
 class Interface(tk.Tk):
-    def __init__(self):
+    def __init__(self,N):
         tk.Tk.__init__(self)
         self.frameCan = tk.Frame(self)
         self.frameCan.pack(side="top")
+        self.N=N
+        width,height=600,480
         self.canvas = tk.Canvas(self.frameCan, width=600, height=480, bg="white")
         self.canvas.bind(
             "<Button-1>", self.onClick_souris
         )  # <Button-1> : Bouton gauche de la souris
         self.canvas.pack()
-        self.canvas.create_line(200, 0, 200, 479)
-        self.canvas.create_line(400, 0, 400, 479)
-        self.canvas.create_line(0, 160, 599, 160)
-        self.canvas.create_line(0, 320, 599, 320)
+        for i in range(1,N):
+            self.canvas.create_line(int(width*i/N), 0, int(width*i/N), 479)
+            self.canvas.create_line(0, int(height*i/N), 599, int(height*i/N))
         self.morpion = Morpion(self)
         self.frameButton = tk.Frame(self)
         self.frameButton.pack(side="bottom")
@@ -42,17 +43,18 @@ class Interface(tk.Tk):
         button2.pack()
         self.listButton.append(button2)
         self.humain = False
+        self.len=N
         self.liste_cases = []
         self.liste_cases_opposee = []
         # Création de la liste des cases pour y tracer les formes
-        for j in range(3):
-            for i in range(3):
+        for j in range(N):
+            for i in range(N):
                 self.liste_cases.append(
-                    [i * 201, j * 161, i * 201 + 198, j * 161 + 158]
+                    [int(width*i/N)+1, int(height*j/N)+1, int(width*i/N)+int(width/N)-1, int(height*j/N)-1+int(height/N)]
                 )
                 # Permet de tracer les croix facilement
                 self.liste_cases_opposee.append(
-                    [i * 201, j * 161 + 159, i * 201 + 199, j * 161]
+                    [int(width*i/N)+1, int(height*j/N)-1+int(height/N), int(width*i/N)+int(width/N)-1, int(height*j/N)+1]
                 )
 
     def fonction1(self):
@@ -61,9 +63,9 @@ class Interface(tk.Tk):
     def fonction2(self):
         print("On est dans fonction2; décider quoi faire si on clique sur Bouton 2")
 
-    def tracer(self, forme, case):
+    def tracer(self, color, case):
         # Trace la forme dans la case, rond ou croix
-        if forme == "rond":
+        if color:
             self.canvas.create_oval(*(self.liste_cases[case]))
         else:
             self.canvas.create_line(*(self.liste_cases[case]))
@@ -93,7 +95,8 @@ class Interface(tk.Tk):
 class Morpion:
     def __init__(self, interface):
         self.interface = interface
-        self.matrice = [None for i in range(9)]
+        self.N=self.interface.N
+        self.matrice = [None for i in range(self.N**2)]
         self.joueurs = ["rond", "croix"]
         self.joueur_debut = random.randint(0, 1)
         self.nombre_tour = 0
@@ -112,7 +115,7 @@ class Morpion:
             self.repaint()
 
     def repaint(self):
-        for i in range(9):
+        for i in range(self.N**2):
             self.interface.effacer(i)
             if self.matrice[i] == "croix":
                 self.interface.tracer("croix", i)
@@ -137,5 +140,5 @@ def copyMatrice(M):
 
 
 if __name__ == "__main__":
-    jeu = Interface()
+    jeu = Interface(5)
     jeu.mainloop()
