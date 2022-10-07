@@ -8,8 +8,11 @@ Created on Mon Oct  3 16:41:03 2022
 import random
 
 
-def evaluation(N,game,coord,color,coordinates):
-    NL1,NL2,NC1,NC2,ND11,ND12,ND21,ND22=0,0,0,0,0,0,0,0
+def evaluation(N,game,coord,color,coordinates,delete):
+    if not delete:
+        NL1,NL2,NC1,NC2,ND11,ND12,ND21,ND22=1,0,1,0,1,0,1,0
+    else:
+        NL1,NL2,NC1,NC2,ND11,ND12,ND21,ND22=0,0,0,0,0,0,0,0
     f1,f2,f3,f4=1,1,1,1
     ncolor=not color
     for player in coord[color]:
@@ -69,19 +72,27 @@ def play(N, game, coord, human):
 def place_best_first(N, game, coord, color):
     i, j = -1, -1
     if len(coord[color]) == N:
-        rd = random.randint(0, N - 1)
-        i, j = coord[color][rd]
+        mini=0
+        minimums=[]
+        for case in coord[color]:
+            g=evaluation(N, game, coord, color, case, True)
+            if g>mini:
+                mini=g
+        for case in coord[color]:
+            g=evaluation(N, game, coord, color, case, True)
+            if g==mini:
+                minimums.append(case)
+        i,j = minimums[0]
     found = False
     while not found:
         maxi=0
         maximums=[]
         for case in coord[2]:
-            g=evaluation(N, game, coord, color, case)
-            print(g)
+            g=evaluation(N, game, coord, color, case, False)
             if g>maxi:
                 maxi=g
         for case in coord[2]:
-            g=evaluation(N, game, coord, color, case)
+            g=evaluation(N, game, coord, color, case, False)
             if g==maxi:
                 maximums.append(case)
         x,y=-1,-1
