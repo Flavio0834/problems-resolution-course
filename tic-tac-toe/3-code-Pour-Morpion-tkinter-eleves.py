@@ -97,18 +97,18 @@ class Morpion:
         self.interface = interface
         self.N=self.interface.N
         self.matrice = [None for i in range(self.N**2)]
-        self.joueur = True
+        self.player = True
         self.nombre_tour = 0
         self.case_a_vider = -1
         self.vainqueur = None
         self.IA = None
 
     def place_pawn(self, case):
-        if self.matrice[case] == None:
-            self.matrice[case] = self.joueur
+        if self.matrice[case] == None and self.matrice.count(self.player)<self.N:
+            self.matrice[case] = self.player
             self.repaint()
-            self.joueur = not self.joueur
-        elif self.matrice[case] == self.joueur:
+            self.player = not self.player
+        elif self.matrice[case] == self.player:
             print(f"La case {case} n'est pas vide !")
             self.case_a_vider = case
             self.matrice[self.case_a_vider] = None
