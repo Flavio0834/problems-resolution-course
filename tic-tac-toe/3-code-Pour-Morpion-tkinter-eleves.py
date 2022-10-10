@@ -18,20 +18,20 @@ import copy
 
 
 class Interface(tk.Tk):
-    def __init__(self,N):
+    def __init__(self, N):
         tk.Tk.__init__(self)
         self.frameCan = tk.Frame(self)
         self.frameCan.pack(side="top")
-        self.N=N
-        width,height=600,480
+        self.N = N
+        width, height = 600, 480
         self.canvas = tk.Canvas(self.frameCan, width=600, height=480, bg="white")
         self.canvas.bind(
             "<Button-1>", self.onClick_souris
         )  # <Button-1> : Bouton gauche de la souris
         self.canvas.pack()
-        for i in range(1,N):
-            self.canvas.create_line(int(width*i/N), 0, int(width*i/N), 479)
-            self.canvas.create_line(0, int(height*i/N), 599, int(height*i/N))
+        for i in range(1, N):
+            self.canvas.create_line(int(width * i / N), 0, int(width * i / N), 479)
+            self.canvas.create_line(0, int(height * i / N), 599, int(height * i / N))
         self.morpion = Morpion(self)
         self.frameButton = tk.Frame(self)
         self.frameButton.pack(side="bottom")
@@ -43,18 +43,28 @@ class Interface(tk.Tk):
         button2.pack()
         self.listButton.append(button2)
         self.humain = False
-        self.len=N
+        self.len = N
         self.liste_cases = []
         self.liste_cases_opposee = []
         # Création de la liste des cases pour y tracer les formes
         for j in range(N):
             for i in range(N):
                 self.liste_cases.append(
-                    [int(width*i/N)+1, int(height*j/N)+1, int(width*i/N)+int(width/N)-1, int(height*j/N)-1+int(height/N)]
+                    [
+                        int(width * i / N) + 1,
+                        int(height * j / N) + 1,
+                        int(width * i / N) + int(width / N) - 1,
+                        int(height * j / N) - 1 + int(height / N),
+                    ]
                 )
                 # Permet de tracer les croix facilement
                 self.liste_cases_opposee.append(
-                    [int(width*i/N)+1, int(height*j/N)-1+int(height/N), int(width*i/N)+int(width/N)-1, int(height*j/N)+1]
+                    [
+                        int(width * i / N) + 1,
+                        int(height * j / N) - 1 + int(height / N),
+                        int(width * i / N) + int(width / N) - 1,
+                        int(height * j / N) + 1,
+                    ]
                 )
 
     def fonction1(self):
@@ -87,15 +97,13 @@ class Interface(tk.Tk):
         # Sur quelle case a-t-on cliqué ?
         for case in self.liste_cases:
             if x > case[0] and x < case[2] and y > case[1] and y < case[3]:
-                self.morpion.place_pawn(
-                    self.liste_cases.index(case)
-                )
+                self.morpion.place_pawn(self.liste_cases.index(case))
 
 
 class Morpion:
     def __init__(self, interface):
         self.interface = interface
-        self.N=self.interface.N
+        self.N = self.interface.N
         self.matrice = [None for i in range(self.N**2)]
         self.player = True
         self.nombre_tour = 0
@@ -104,11 +112,14 @@ class Morpion:
         self.IA = None
 
     def place_pawn(self, case):
-        if self.matrice[case] == None and self.matrice.count(self.player)<self.N:
+        if self.matrice[case] == None and self.matrice.count(self.player) < self.N:
             self.matrice[case] = self.player
             self.repaint()
             self.player = not self.player
-        elif self.matrice[case] == self.player:
+        elif (
+            self.matrice[case] == self.player
+            and self.matrice.count(self.player) == self.N
+        ):
             print(f"La case {case} n'est pas vide !")
             self.case_a_vider = case
             self.matrice[self.case_a_vider] = None
@@ -117,7 +128,7 @@ class Morpion:
     def repaint(self):
         for i in range(self.N**2):
             self.interface.effacer(i)
-            if self.matrice[i]==True :
+            if self.matrice[i] == True:
                 self.interface.tracer(True, i)
             elif self.matrice[i] == False:
                 self.interface.tracer(False, i)
