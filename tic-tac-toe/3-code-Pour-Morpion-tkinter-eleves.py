@@ -11,9 +11,7 @@ Si la case cliquée n'est pas vide, on la vide !
 Deux boutons sont crées (bouton1, bouton2) pour la démo.
 Ce code est une aide de base pour réaliser le BE 'Morpion' avec TkInter.
 """
-import random
 import tkinter as tk
-import time
 import copy
 
 
