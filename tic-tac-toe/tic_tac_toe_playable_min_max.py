@@ -67,7 +67,6 @@ def min_max(N,game,deep_org,deep,method,color):
     min_score,max_score=float("inf"),-float("inf")
     best_move=None
     list_next_games=[]
-    #print(game[0].count(color))
     Ncolor=sum([game[i].count(color) for i in range(N)])
     if Ncolor<N:
         list_next_games=next_game_less_3(N,game,color)
