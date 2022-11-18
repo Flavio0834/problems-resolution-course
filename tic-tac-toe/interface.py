@@ -175,5 +175,3 @@ def copyMatrice(M):
 if __name__ == "__main__":
     jeu = Interface(5)
     jeu.mainloop()
-
-# To do : bouton recommencer (nouvelle instance de Game (et de Morpion?) et repaint)

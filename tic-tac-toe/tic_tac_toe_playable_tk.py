@@ -10,13 +10,6 @@ class Game:
             for j in range(N):
                 self.coord[2].append((i, j))
         self.human = human
-        # for k in self.matrix:
-        #     print(k)
-
-    # Premier problème : savoir qui commence devra être décidé via un bouton en début de partie
-    # Deuxième problème : il faut passer la classe en fonctionnement tour par tour (d'un état à un autre).
-    # Ainsi, tout le jeu ne doit pas être dans le constructeur ni dans une boucle for.
-    # Il faut donc que le constructeur initialise les variables et que la fonction play() soit appelée à chaque tour.
 
     def play(self):
         self.color = False
@@ -51,7 +44,6 @@ class Game:
         # self.interface.morpion.place_pawn(x * N + y)
 
     def place_human(self, x, y, x1=-1, y1=-1):
-        # To do : see how to get infos from the interface. The idea : place_pawn will call place_human. How to handle when pawns are removed ?
         x, y = -1, -1
         if len(self.coord[self.color]) == self.N:
             print("Il va falloir déplacer un pion.")
@@ -71,11 +63,9 @@ class Game:
             self.matrix[x1][y1] = float("inf")
             self.coord[self.color].remove((x1, y1))
             self.coord[2].append((x1, y1))
-            # self.interface.morpion.place_pawn(x1 * N + y1)
         self.matrix[x][y] = self.color
         self.coord[self.color].append((x, y))
         self.coord[2].remove((x, y))
-        # self.interface.morpion.place_pawn(x * N + y)
 
     def ended(self, color):
         for i in range(len(self.matrix)):
