@@ -158,14 +158,16 @@ class Morpion:
         self.matrice = self.interface.game.matrix
         self.player = False
         self.nombre_tour = 0
-        self.case_a_vider = -1
+        self.case_a_vider = (-1, -1)
         self.vainqueur = None
 
     def place_pawn(self, x, y):
         if (
             self.matrice[x][y] == float("inf")
             and len(self.interface.game.coord[self.player]) < self.N
+            and self.case_a_vider != (x, y)
         ):
+            self.case_a_vider = (-1, -1)
             self.matrice[x][y] = self.player
             self.interface.game.coord[self.player].append((x, y))
             self.interface.game.coord[2].remove((x, y))
