@@ -13,6 +13,9 @@ Ce code est une aide de base pour réaliser le BE 'Morpion' avec TkInter.
 """
 import tkinter as tk
 import copy
+import random
+from tic_tac_toe_playable_tk import Game
+from tkinter.messagebox import showinfo
 
 
 class Interface(tk.Tk):
@@ -30,11 +33,12 @@ class Interface(tk.Tk):
         for i in range(1, N):
             self.canvas.create_line(int(width * i / N), 0, int(width * i / N), 479)
             self.canvas.create_line(0, int(height * i / N), 599, int(height * i / N))
+        self.game = Game(N, self)
         self.morpion = Morpion(self)
         self.frameButton = tk.Frame(self)
         self.frameButton.pack(side="bottom")
         self.listButton = []
-        button1 = tk.Button(self.frameButton, text="Bouton 1", command=self.fonction1)
+        button1 = tk.Button(self.frameButton, text="Recommencer", command=self.reset)
         button1.pack()
         self.listButton.append(button1)
         button2 = tk.Button(self.frameButton, text="Bouton 2", command=self.fonction2)
@@ -73,7 +77,7 @@ class Interface(tk.Tk):
 
     def tracer(self, color, case):
         # Trace la forme dans la case, rond ou croix
-        if color:
+        if not color:
             self.canvas.create_oval(*(self.liste_cases[case]))
         else:
             self.canvas.create_line(*(self.liste_cases[case]))
@@ -89,47 +93,67 @@ class Interface(tk.Tk):
     def onClick_souris(self, event):
         x = event.x
         y = event.y
-        print(
-            f"On a cliqué dans la case {(x,y)}; on affiche un 'O' ou 'X' dans la case (si vide)"
-        )
+        print(f"On a cliqué dans la case {(x,y)}")
         # Sur quelle case a-t-on cliqué ?
         for case in self.liste_cases:
             if x > case[0] and x < case[2] and y > case[1] and y < case[3]:
-                self.morpion.place_pawn(self.liste_cases.index(case))
+                index = self.liste_cases.index(case)
+                self.morpion.place_pawn(index // self.N, index % self.N)
+
+    def reset(self):
+        self.game = Game(self.N, self)
+        self.morpion = Morpion(self)
+        self.morpion.repaint()
 
 
 class Morpion:
     def __init__(self, interface):
         self.interface = interface
         self.N = self.interface.N
-        self.matrice = [None for i in range(self.N**2)]
-        self.player = True
+        self.matrice = self.interface.game.matrix
+        self.player = False
         self.nombre_tour = 0
         self.case_a_vider = -1
         self.vainqueur = None
-        self.IA = None
 
-    def place_pawn(self, case):
-        if self.matrice[case] == None and self.matrice.count(self.player) < self.N:
-            self.matrice[case] = self.player
-            self.repaint()
-            self.player = not self.player
-        elif (
-            self.matrice[case] == self.player
-            and self.matrice.count(self.player) == self.N
+    def place_pawn(self, x, y):
+        if (
+            self.matrice[x][y] == float("inf")
+            and len(self.interface.game.coord[self.player]) < self.N
         ):
-            print(f"La case {case} n'est pas vide !")
-            self.case_a_vider = case
-            self.matrice[self.case_a_vider] = None
+            self.matrice[x][y] = self.player
+            self.interface.game.coord[self.player].append((x, y))
+            self.interface.game.coord[2].remove((x, y))
+
+            self.interface.game.place_random(not self.player)
+
+            self.repaint()
+
+            if self.interface.game.ended(self.player):
+                showinfo("Fin de partie", "Partie terminée : les ronds ont gagné !")
+                self.interface.reset()
+
+            elif self.interface.game.ended(not self.player):
+                showinfo("Fin de partie", "Partie terminée : les croix ont gagné !")
+
+        elif (
+            self.matrice[x][y] == self.player
+            and len(self.interface.game.coord[self.player]) == self.N
+        ):
+            self.case_a_vider = (x, y)
+            self.matrice[x][y] = float("inf")
+            self.interface.game.coord[self.player].remove((x, y))
+            self.interface.game.coord[2].append((x, y))
             self.repaint()
 
     def repaint(self):
-        for i in range(self.N**2):
-            self.interface.effacer(i)
-            if self.matrice[i] == True:
-                self.interface.tracer(True, i)
-            elif self.matrice[i] == False:
-                self.interface.tracer(False, i)
+        for i in range(self.N):
+            for j in range(self.N):
+                self.interface.effacer(i * self.N + j)
+                if self.matrice[i][j] == True:
+                    self.interface.tracer(True, i * self.N + j)
+                elif self.matrice[i][j] == False:
+                    self.interface.tracer(False, i * self.N + j)
 
 
 def printMatrice(M):
@@ -151,3 +175,5 @@ def copyMatrice(M):
 if __name__ == "__main__":
     jeu = Interface(5)
     jeu.mainloop()
+
+# To do : bouton recommencer (nouvelle instance de Game (et de Morpion?) et repaint)
