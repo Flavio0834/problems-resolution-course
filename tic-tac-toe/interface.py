@@ -41,7 +41,9 @@ class Interface(tk.Tk):
         button1 = tk.Button(self.frameButton, text="Recommencer", command=self.reset)
         button1.pack()
         self.listButton.append(button1)
-        button2 = tk.Button(self.frameButton, text="Bouton 2", command=self.fonction2)
+        button2 = tk.Button(
+            self.frameButton, text="Changer la taille", command=self.change_N
+        )
         button2.pack()
         self.listButton.append(button2)
         self.humain = False
@@ -68,6 +70,47 @@ class Interface(tk.Tk):
                         int(height * j / N) + 1,
                     ]
                 )
+
+    def change_N(self):
+        self.N = 3 if self.N == 5 else 5
+        width, height = 600, 480
+        self.canvas.pack_forget()
+        self.canvas = tk.Canvas(self.frameCan, width=600, height=480, bg="white")
+        self.canvas.bind(
+            "<Button-1>", self.onClick_souris
+        )  # <Button-1> : Bouton gauche de la souris
+        self.canvas.pack()
+        for i in range(1, self.N):
+            self.canvas.create_line(
+                int(width * i / self.N), 0, int(width * i / self.N), 479
+            )
+            self.canvas.create_line(
+                0, int(height * i / self.N), 599, int(height * i / self.N)
+            )
+            self.liste_cases = []
+        self.liste_cases_opposee = []
+        # Création de la liste des cases pour y tracer les formes
+        N = self.N
+        for j in range(N):
+            for i in range(N):
+                self.liste_cases.append(
+                    [
+                        int(width * i / N) + 1,
+                        int(height * j / N) + 1,
+                        int(width * i / N) + int(width / N) - 1,
+                        int(height * j / N) - 1 + int(height / N),
+                    ]
+                )
+                # Permet de tracer les croix facilement
+                self.liste_cases_opposee.append(
+                    [
+                        int(width * i / N) + 1,
+                        int(height * j / N) - 1 + int(height / N),
+                        int(width * i / N) + int(width / N) - 1,
+                        int(height * j / N) + 1,
+                    ]
+                )
+        self.reset()
 
     def fonction1(self):
         print("On est dans fonction1; décider quoi faire si on clique sur Bouton 1")
