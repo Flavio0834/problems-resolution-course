@@ -32,7 +32,7 @@ def interest(N,game,color):
             if game[i][j]==ncolor:
                 NL2+=1
             if game[j][i]==color:
-               NC1+=1
+                NC1+=1
             if game[j][i]==ncolor:
                 NC2+=1
                 
@@ -42,7 +42,7 @@ def interest(N,game,color):
             player+=1
         if NC2==0:
             player+=1
-        if NL1==0:
+        if NC1==0:
             opponent+=1 
             
     ND11,ND12,ND21,ND22=0,0,0,0

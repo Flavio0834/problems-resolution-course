@@ -35,7 +35,7 @@ def interest(N,game,color):
             player+=1
         if NC2==0:
             player+=1
-        if NL1==0:
+        if NC1==0:
             opponent+=1 
             
     ND11,ND12,ND21,ND22=0,0,0,0
@@ -72,18 +72,23 @@ def min_max(N,game,deep_org,deep,method,color):
         list_next_games=next_game_less_3(N,game,color)
     else:
         list_next_games=next_game_more_3(N,game,color)
+    assert(list_next_games!=[])
+    scores=[]
     for game_bis in list_next_games:
             game1,score=min_max(N, game_bis,deep_org, deep-1, not method, not color)
+            scores.append(score)
             if method:
-                if score>max_score:
+                if score>=max_score:
                     best_score=score
                     best_game= game1
                     max_score = best_score
             else:
-                if score<min_score:
+                if score<=min_score:
                     best_score=score
                     best_game= game1
                     min_score = best_score
+    print("  "*deep, end="")
+    print(deep,scores)
     if deep==deep_org:
         return best_game,best_score
     return game,best_score
