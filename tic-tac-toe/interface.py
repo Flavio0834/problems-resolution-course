@@ -41,11 +41,13 @@ class Interface(tk.Tk):
         button1 = tk.Button(self.frameButton, text="Recommencer", command=self.reset)
         button1.pack()
         self.listButton.append(button1)
-        button2 = tk.Button(
-            self.frameButton, text="Changer la taille", command=self.change_N
-        )
-        button2.pack()
-        self.listButton.append(button2)
+        # button2 = tk.Button(
+        #     self.frameButton, text="Changer la taille", command=self.change_N
+        # )
+        # button2.pack()
+        # self.listButton.append(button2)
+        self.N_selector = tk.Spinbox(self, from_=3, to=15, command=self.change_N)
+        self.N_selector.pack()
         self.humain = False
         self.len = N
         self.liste_cases = []
@@ -72,7 +74,7 @@ class Interface(tk.Tk):
                 )
 
     def change_N(self):
-        self.N = 3 if self.N == 5 else 5
+        self.N = int(self.N_selector.get())
         width, height = 600, 480
         self.canvas.pack_forget()
         self.canvas = tk.Canvas(self.frameCan, width=600, height=480, bg="white")
@@ -178,6 +180,7 @@ class Morpion:
 
             elif self.interface.game.ended(not self.player):
                 showinfo("Fin de partie", "Partie terminée : les croix ont gagné !")
+                self.interface.reset()
 
         elif (
             self.matrice[x][y] == self.player
@@ -216,5 +219,5 @@ def copyMatrice(M):
 
 
 if __name__ == "__main__":
-    jeu = Interface(5)
+    jeu = Interface(3)
     jeu.mainloop()
